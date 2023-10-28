@@ -29,7 +29,7 @@ const generate = async () => {
         await writeFile(`${generatedDirPath}/generated.js`, '', 'utf8');
       }
 
-      const variable = `export const ${templateName} = \`${JSON.stringify(content)}\`;`;
+      const variable = `export const ${templateName} = ${JSON.stringify(content)};`;
       const generatedContent = await readFile(`${generatedDirPath}/generated.js`, 'utf8');
 
       const generatedContentToWrite = generatedContent ? `${generatedContent}\n${variable}` : variable;

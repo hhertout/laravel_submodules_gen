@@ -1,0 +1,31 @@
+{
+  "name": "cli_inq",
+  "private": false,
+  "type": "module",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "bin": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "inquirer": "^9.2.11",
+    "nanospinner": "^1.1.0"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@types/inquirer": "^9.0.6",
+    "@types/jest": "^29.5.6",
+    "husky": "^8.0.3",
+    "jest": "^29.7.0",
+    "jsmin": "^1.0.1",
+    "lint-staged": "^15.0.2",
+    "prettier": "3.0.3"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  }
+}

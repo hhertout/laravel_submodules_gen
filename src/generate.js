@@ -4,8 +4,6 @@ import { dirname } from 'path';
 import isDirectory from './utils/isDirectory.js';
 
 const generate = async () => {
-  const templates = {};
-
   const url = fileURLToPath(import.meta.url);
   const mainDir = dirname(url);
 

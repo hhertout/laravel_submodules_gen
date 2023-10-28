@@ -12,7 +12,7 @@ class Prompter {
         type: 'list',
         name: 'technology',
         message: 'What technology do you want to use?',
-        validate(input, answers) {
+        validate(input, _answers) {
           if (input.length === 0) {
             return 'Technology is required';
           }
@@ -24,7 +24,7 @@ class Prompter {
         type: 'input',
         name: 'submoduleName',
         message: 'What is the name of your submodule?',
-        validate(input, answers) {
+        validate(input, _answers) {
           if (input.length === 0) {
             return 'Submodule name is required';
           }

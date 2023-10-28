@@ -1,46 +1,41 @@
-import inquirer from "inquirer";
-import Tech from "../enums/tech.enum.js";
+import inquirer from 'inquirer';
+import Tech from '../enums/tech.enum.js';
 
 class Prompter {
-    /**
-     * Can throw error if validation fails
-     *
-     * @returns {Promise<{technology: string, submoduleName: string}>}
-     */
-    static prompt = async () => {
-        const result = await inquirer.prompt([
-            {
-                type: 'list',
-                name: 'technology',
-                message: 'What technology do you want to use?',
-                choices: [Tech.VANILLA, Tech.REACT],
-            },
-            {
-                type: 'input',
-                name: 'submoduleName',
-                message: 'What is the name of your submodule?',
-            },
-        ]);
-        this.#validatePromptValues(result);
-    };
-    /**
-     * @private
-     *
-     * Validate prompt value
-     *
-     * @param {{technology: any, submoduleName: string}} result
-     */
-    static #validatePromptValues = (result) => {
-        if (!result.submoduleName) {
-            throw new Error('Submodule name is required');
-        }
-        if (!result.technology) {
-            throw new Error('Technology is required');
-        }
-        if (!Object.values(Tech).includes(result.technology)) {
-            throw new Error('Invalid technology');
-        }
-    };
+  /**
+   *
+   * @returns {Promise<{technology: string, submoduleName: string}>}
+   */
+  static prompt = async () => {
+    return inquirer.prompt([
+      {
+        type: 'list',
+        name: 'technology',
+        message: 'What technology do you want to use?',
+        validate(input, answers) {
+          if (input.length === 0) {
+            return 'Technology is required';
+          }
+          return true;
+        },
+        choices: [Tech.VANILLA, Tech.REACT],
+      },
+      {
+        type: 'input',
+        name: 'submoduleName',
+        message: 'What is the name of your submodule?',
+        validate(input, answers) {
+          if (input.length === 0) {
+            return 'Submodule name is required';
+          }
+          if (!input.toLowerCase().includes('module')) {
+            return 'Submodule name must include "module"';
+          }
+          return true;
+        },
+      },
+    ]);
+  };
 }
 
 export default Prompter;

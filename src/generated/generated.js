@@ -1,0 +1,3 @@
+export const react_app_jsx = `"import React from 'react';\n\nconst App = () => {\n  return (\n    <div>\n      \n    </div>\n  );\n};\n\nexport default App;"`;
+export const react_app_module_js = `"import React from \"react\";\nimport ReactDOM from \"react-dom/client\";\nimport App from \"./App\";\n\nconst root = ReactDOM.createRoot(document.getElementById(\"root\"));\n\nroot.render(<App />)"`;
+export const vanilla_app_module_js = `""`;

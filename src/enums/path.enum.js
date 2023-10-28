@@ -1,12 +1,9 @@
 class Path {
-  #REACT="/src/templates/react"
-  #VANILLA="/src/templates/vanilla"
-
-  static get REACT() {
-    return this.#REACT;
+  static get REACT_TEMPLATE_PATH() {
+    return "/templates/react";
   }
-  static get VANILLA() {
-    return this.#VANILLA;
+  static get VANILLA_TEMPLATE_PATH() {
+    return "/templates/vanilla";
   }
 }
 

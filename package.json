@@ -7,9 +7,10 @@
   "bin": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "test": "jest",
-    "coverage": "jest --coverage",
-    "prepare": "husky install"
+    "test": "NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' jest",
+    "coverage": "NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' jest --coverage",
+    "prepare": "husky install",
+    "generate": "node src/generate.js"
   },
   "dependencies": {
     "inquirer": "^9.2.11",
@@ -21,7 +22,6 @@
     "@types/jest": "^29.5.6",
     "husky": "^8.0.3",
     "jest": "^29.7.0",
-    "jsmin": "^1.0.1",
     "lint-staged": "^15.0.2",
     "prettier": "3.0.3"
   },

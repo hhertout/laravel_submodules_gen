@@ -9,9 +9,10 @@ describe('Transform the template format', () => {
     const baseDir = dirname(url);
     const template = await readFile(baseDir + '/../data/transform.template', 'utf8');
     const t = JSON.stringify(encodeURIComponent(template));
-    console.log(t)
-
     const decode = decodeURIComponent(t);
-    console.log(decode)
+
+    expect(decode).not.toBeNull();
+    expect(decode).not.toBeUndefined();
+    expect(decode).toBe(`"${template}"`);
   })
 });

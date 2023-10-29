@@ -4,6 +4,12 @@ import sleep from './utils/sleep.js';
 import { createSpinner } from 'nanospinner';
 import Prompter from './core/Prompt.js';
 
+/**
+ *
+ * @method main
+ * @description Origin path: src/index.js
+ * @returns {Promise<void>}
+ */
 const main = () => {
   const spinner = createSpinner('Starting...').start();
   sleep(1000).then(() => {

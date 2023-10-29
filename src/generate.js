@@ -3,6 +3,12 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import isDirectory from './utils/isDirectory.js';
 
+/**
+ * @method generate
+ * @description Origin path: src/generate.js
+ * Base method for "generate" script
+ * @returns {Promise<void>}
+ */
 const generate = async () => {
   const url = fileURLToPath(import.meta.url);
   const mainDir = dirname(url);

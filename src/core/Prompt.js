@@ -1,8 +1,14 @@
 import inquirer from 'inquirer';
 import Tech from '../enums/tech.enum.js';
 
+/**
+ *  @class Prompter
+ *
+ *  Class to prompt the user for the technology and the name of the submodule
+ */
 class Prompter {
   /**
+   * @method prompt
    *
    * @returns {Promise<{technology: string, submoduleName: string}>}
    */

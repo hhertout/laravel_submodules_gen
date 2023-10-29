@@ -10,6 +10,7 @@ jobs:
       name: Pre-release notes
       runs-on: ubuntu-latest
       steps:
+        - uses: actions/checkout@master
         - name: Pre-release notes generation
           uses: "marvinpinto/action-automatic-releases@latest"
           with:

@@ -13,4 +13,5 @@ jobs:
       - uses: actions/checkout@master
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
+          prerelease: false
           repo_token: "${{ secrets.GITHUB_TOKEN }}"

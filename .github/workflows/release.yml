@@ -3,7 +3,10 @@ name: "🎁 Release"
 on:
   create:
     tags:
-      - 'v*'
+      - v*
+  push:
+    branches:
+      - main
 
 jobs:
   release:

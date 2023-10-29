@@ -7,3 +7,7 @@
 # Usage
 
 # Contributing
+
+# Release
+
+You can found pre-release && release related for each tag

@@ -12,6 +12,7 @@ import * as templates from '../../src/generated/generated.js';
 class SubmoduleBuilder {
   #subModuleName;
   #destinationPathRepository;
+  #formattedTemplates;
 
   /**
    *
@@ -19,16 +20,18 @@ class SubmoduleBuilder {
    * @param {string} subModuleName
    * @param {{[key: string]: string}} destinationPathRepository
    */
-  constructor(subModuleName, destinationPathRepository = DESTINATION_PATH ) {
+  constructor(subModuleName, destinationPathRepository = DESTINATION_PATH) {
     this.#subModuleName = subModuleName;
     this.#destinationPathRepository = destinationPathRepository;
+    this.#formattedTemplates = null;
   }
 
   /**
    *
+   * Caution - Object values are readonly !
    * @method getTemplates
-   * @description return all the templates from generated.js
-   * @returns {{[key: string]?: string}}
+   * @description Return all the templates from generated.js as module object
+   * @returns {{[variable: string]: string}}
    */
   getTemplates = () => {
     return templates;
@@ -49,7 +52,7 @@ class SubmoduleBuilder {
   };
 
   #writeSubmoduleFiles = async () => {
-    const templates = this.getTemplates();
+    const templates = this.#formattedTemplates;
     for (const [key, template] of Object.entries(templates)) {
       const fileName = key.replaceAll('_', '.');
       const destPath = resolve(this.#destinationPathRepository[key], fileName);
@@ -60,14 +63,19 @@ class SubmoduleBuilder {
 
   #replaceTemplateVariables = async () => {
     const templates = this.getTemplates();
-    for (const [key, template] of Object.entries(templates)) {
-      // todo modify with encode uri
-      template.replaceAll('{{subModuleName}}', this.#subModuleName);
-      template.replaceAll('{{subModuleName_lw}}', this.#subModuleName.toLowerCase());
-      template.replaceAll('{{subModuleName_up}}', this.#subModuleName.toUpperCase());
-      template.replaceAll('{{subModuleName_capitalized}}', Formatter.getCapitalize(this.#subModuleName));
-      template.replaceAll('{{subModuleName_camel}}', Formatter.getCamelCase(this.#subModuleName));
+    const formattedTemplates = {};
+    for (let [key, template] of Object.entries(templates)) {
+      let fmt = template;
+      fmt = fmt.replaceAll(encodeURIComponent('{{subModuleName}}'), encodeURIComponent(this.#subModuleName));
+      fmt = fmt.replaceAll(encodeURIComponent('{{subModuleName_lw}}'), encodeURIComponent(this.#subModuleName.toLowerCase()));
+      fmt = fmt.replaceAll(encodeURIComponent('{{subModuleName_up}}'), encodeURIComponent(this.#subModuleName.toUpperCase()));
+      fmt = fmt.replaceAll(encodeURIComponent('{{subModuleName_capitalized}}'), encodeURIComponent(Formatter.getCapitalize(this.#subModuleName)));
+      fmt = fmt.replaceAll(encodeURIComponent('{{subModuleName_camel}}'), encodeURIComponent(Formatter.getCamelCase(this.#subModuleName)));
+
+      formattedTemplates[key] = fmt;
     }
+
+    this.#formattedTemplates = formattedTemplates;
   };
 
   #updateAndAddToFiles = async () => {

@@ -1,0 +1,15 @@
+import React from 'react';
+
+const {{subModuleName}} = () => {
+  return (
+    <div>
+      <h1>{{subModuleName_lw}}</h1>
+      <h1>{{subModuleName_up}}</h1>
+      <h1>{{subModuleName_camel}}</h1>
+      <h1>{{subModuleName_capitalized}}</h1>
+      <div>Ce test est-il concluant ???</div>
+    </div>
+  );
+};
+
+export default {{subModuleName}};

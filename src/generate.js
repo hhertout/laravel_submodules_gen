@@ -3,6 +3,12 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import isDirectory from './utils/isDirectory.js';
 
+/**
+ * @method generate
+ * @description Origin path: src/generate.js
+ * Base method for "generate" script
+ * @returns {Promise<void>}
+ */
 const generate = async () => {
   const url = fileURLToPath(import.meta.url);
   const mainDir = dirname(url);
@@ -22,14 +28,14 @@ const generate = async () => {
       const isDir = await isDirectory(`${mainDir}/templates/${dir}/${file}`);
       if (isDir) continue;
       const content = await readFile(`${mainDir}/templates/${dir}/${file}`, 'utf8');
-      const templateName = `${dir}_${file.replaceAll('.', '_')}`;
+      const templateName = `${dir}_${file.replaceAll('.', '_').replace("_template", "")}`;
 
       const generatedDir = await readdir(`${mainDir}/generated`);
       if (!generatedDir.includes('generated.js')) {
         await writeFile(`${generatedDirPath}/generated.js`, '', 'utf8');
       }
 
-      const variable = `export const ${templateName} = ${JSON.stringify(content)};`;
+      const variable = `export const ${templateName} = ${JSON.stringify(encodeURIComponent(content))};`;
       const generatedContent = await readFile(`${generatedDirPath}/generated.js`, 'utf8');
 
       const generatedContentToWrite = generatedContent ? `${generatedContent}\n${variable}` : variable;

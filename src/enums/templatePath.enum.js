@@ -1,9 +1,9 @@
 /*
-  * @class Path
+  * @class TemplatePath
   *
   * @description Path enum
  */
-class Path {
+class TemplatePath {
   /*
     * @static
     * @method REACT_TEMPLATE_PATH
@@ -21,4 +21,4 @@ class Path {
   }
 }
 
-export default Path;
+export default TemplatePath;

@@ -10,17 +10,16 @@ import Prompter from './core/Prompt.js';
  * @description Origin path: src/index.js
  * @returns {Promise<void>}
  */
-const main = () => {
+const main = async () => {
   const spinner = createSpinner('Starting...').start();
-  sleep(1000).then(() => {
-    spinner.stop();
-    Prompter.prompt().then((answers) => {
-      spinner.success({ text: 'Done!' });
-      return answers;
-    }).catch(err => {
-      spinner.error({ text: err.message });
-    });
-  });
+  await sleep(1000);
+  spinner.stop();
+  try {
+    const answers = await Prompter.prompt();
+    spinner.success({ text: 'Done!' });
+  } catch (err) {
+    spinner.error({ text: err.message });
+  }
 };
 
 main();

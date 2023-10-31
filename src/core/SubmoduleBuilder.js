@@ -44,43 +44,68 @@ class SubmoduleBuilder {
    * @returns {Promise<void>}
    */
   run = async () => {
-    await this.#replaceTemplateVariables();
-    await Promise.all([
-      this.#writeSubmoduleFiles(),
-      this.#updateAndAddToFiles(),
-    ]);
+    try {
+      await this.#replaceTemplateVariables();
+      await Promise.all([
+        this.#writeSubmoduleFiles(),
+        this.#updateAndAddToFiles(),
+      ]);
+    } catch (err) {
+      throw new Error(`Error while running the app: ${err.message}`);
+    }
   };
 
   #writeSubmoduleFiles = async () => {
-    const templates = this.#formattedTemplates;
-    for (const [key, template] of Object.entries(templates)) {
-      const fileName = key.replaceAll('_', '.');
-      const destPath = resolve(this.#destinationPathRepository[key], fileName);
-      await fs.mkdir(dirname(destPath), { recursive: true });
-      await fs.writeFile(destPath, decodeURIComponent(template), 'utf-8');
+    try {
+      for (const [key, template] of Object.entries(this.#formattedTemplates)) {
+        const fileName = key.replaceAll('_', '.');
+        const destPath = resolve(
+          this.#destinationPathRepository[key],
+          fileName
+        );
+        await fs.mkdir(dirname(destPath), { recursive: true });
+        await fs.writeFile(destPath, decodeURIComponent(template), 'utf-8');
+      }
+    } catch (err) {
+      throw err;
     }
   };
 
   #replaceTemplateVariables = async () => {
-    const templates = this.getTemplates();
-    const formattedTemplates = {};
-    for (let [key, template] of Object.entries(templates)) {
-      let fmt = template;
-      fmt = fmt.replaceAll(encodeURIComponent('{{subModuleName}}'), encodeURIComponent(this.#subModuleName));
-      fmt = fmt.replaceAll(encodeURIComponent('{{subModuleName_lw}}'), encodeURIComponent(this.#subModuleName.toLowerCase()));
-      fmt = fmt.replaceAll(encodeURIComponent('{{subModuleName_up}}'), encodeURIComponent(this.#subModuleName.toUpperCase()));
-      fmt = fmt.replaceAll(encodeURIComponent('{{subModuleName_capitalized}}'), encodeURIComponent(Formatter.getCapitalize(this.#subModuleName)));
-      fmt = fmt.replaceAll(encodeURIComponent('{{subModuleName_camel}}'), encodeURIComponent(Formatter.getCamelCase(this.#subModuleName)));
-
-      formattedTemplates[key] = fmt;
+    try {
+      const templates = this.getTemplates();
+      const formattedTemplates = {};
+      for (let [key, template] of Object.entries(templates)) {
+        let fmt = template;
+        fmt = fmt.replaceAll(
+          encodeURIComponent('{{subModuleName}}'),
+          encodeURIComponent(this.#subModuleName)
+        );
+        fmt = fmt.replaceAll(
+          encodeURIComponent('{{subModuleName_lw}}'),
+          encodeURIComponent(this.#subModuleName.toLowerCase())
+        );
+        fmt = fmt.replaceAll(
+          encodeURIComponent('{{subModuleName_up}}'),
+          encodeURIComponent(this.#subModuleName.toUpperCase())
+        );
+        fmt = fmt.replaceAll(
+          encodeURIComponent('{{subModuleName_capitalized}}'),
+          encodeURIComponent(Formatter.getCapitalize(this.#subModuleName))
+        );
+        fmt = fmt.replaceAll(
+          encodeURIComponent('{{subModuleName_camel}}'),
+          encodeURIComponent(Formatter.getCamelCase(this.#subModuleName))
+        );
+        formattedTemplates[key] = fmt;
+      }
+      this.#formattedTemplates = formattedTemplates;
+    } catch (err) {
+      throw err;
     }
-
-    this.#formattedTemplates = formattedTemplates;
   };
 
-  #updateAndAddToFiles = async () => {
-
-  };
+  #updateAndAddToFiles = async () => {};
 }
 
 export default SubmoduleBuilder;

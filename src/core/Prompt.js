@@ -24,7 +24,7 @@ class Prompter {
           }
           return true;
         },
-        choices: [Tech.VANILLA, Tech.REACT],
+        choices: Object.values(Tech),
       },
       {
         type: 'input',

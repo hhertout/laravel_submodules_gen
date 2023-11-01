@@ -1,7 +1,8 @@
-/*
- * @class Tech
- * @classdesc Tech enum
- *This file is used to store all the techs used in the project.
+/**
+ * @Object
+ *
+ * Object listing technologies
+ * @type {{VANILLA: string, REACT: string, SOLID: string}}
  */
 const Tech = {
   VANILLA: 'Vanilla',

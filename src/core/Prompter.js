@@ -22,7 +22,7 @@ class Prompter {
           if (input.length === 0) {
             return 'Submodule name is required';
           }
-          if (!input.toLowerCase().includes('module')) {
+          if (!input.match(/Module$/i)) {
             return 'Submodule name must include "Module"';
           }
           return true;

@@ -6,10 +6,15 @@ describe('Format class tests', () => {
   });
   test('format class has getCapitalize method', () => {
     expect(Formatter.getCapitalize).toBeDefined();
-    const test = 'test';
-    const expected = 'Test';
+    const test = 'testModule';
+    const expected = 'TestModule';
     const result = Formatter.getCapitalize(test);
     expect(result).toEqual(expected);
+
+    const test2 = 'testmodule';
+    const expected2 = 'TestModule';
+    const result2 = Formatter.getCapitalize(test2);
+    expect(result2).toEqual(expected2);
   });
   test('format class has decapitalize method', () => {
     expect(Formatter.decapitalize).toBeDefined();

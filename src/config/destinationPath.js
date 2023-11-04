@@ -1,6 +1,6 @@
 /**
  * @object DestinationPathEnum
- * @description Enum for destination path
+ * @description Object config for destination path
  */
 const DESTINATION_PATH = {
   controller_php: 'app/Http/Controllers',

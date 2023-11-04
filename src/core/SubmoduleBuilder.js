@@ -71,6 +71,7 @@ class SubmoduleBuilder {
     }
     try {
       for (const [key, template] of Object.entries(this.#formattedTemplates)) {
+        if (!this.#destinationPathRepository[key]) continue;
         const fileName = key.replaceAll('_', '.');
         const destPath = resolve(
           this.#destinationPathRepository[key],

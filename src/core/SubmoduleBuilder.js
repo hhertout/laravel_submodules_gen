@@ -7,11 +7,14 @@ import * as templates from '../../src/generated/generated.js';
 /**
  * @class SubmoduleBuilder
  *
- * Build the submodule files and folders
+ * @description Build the submodule files and folders
  */
 class SubmoduleBuilder {
+  /** @type {string} */
   #subModuleName;
+  /** @type {{[key: string]: string}} */
   #destinationPathRepository;
+  /** @type {{[key: string]: string} | null} */
   #formattedTemplates;
 
   /**
@@ -33,7 +36,7 @@ class SubmoduleBuilder {
    * @description Return all the templates from generated.js as module object
    * @returns {{[variable: string]: string}}
    */
-  getTemplates = () => {
+  getTemplates$ = () => {
     return templates;
   };
 
@@ -42,20 +45,30 @@ class SubmoduleBuilder {
    * @method run
    * @description run the app
    * @returns {Promise<void>}
+   * @throws {Error}
    */
   run = async () => {
     try {
       await this.#replaceTemplateVariables();
-      await Promise.all([
-        this.#writeSubmoduleFiles(),
-        this.#updateAndAddToFiles(),
-      ]);
+      await this.#writeSubmoduleFiles();
     } catch (err) {
       throw new Error(`Error while running the app: ${err.message}`);
     }
   };
 
+  /**
+   * @method #writeSubmoduleFiles
+   * @description Write the submodule files to the destination path
+   * @returns {Promise<void>}
+   * @throws {Error}
+   */
   #writeSubmoduleFiles = async () => {
+    if (
+      !this.#formattedTemplates ||
+      Object.keys(this.#formattedTemplates).length === 0
+    ) {
+      throw new Error('Templates not found');
+    }
     try {
       for (const [key, template] of Object.entries(this.#formattedTemplates)) {
         const fileName = key.replaceAll('_', '.');
@@ -71,9 +84,15 @@ class SubmoduleBuilder {
     }
   };
 
+  /**
+   * @method #replaceTemplateVariables
+   * @description Replace the template variables with the submodule name
+   * @returns {Promise<void>}
+   * @throws {Error}
+   */
   #replaceTemplateVariables = async () => {
     try {
-      const templates = this.getTemplates();
+      const templates = this.getTemplates$();
       const formattedTemplates = {};
       for (let [key, template] of Object.entries(templates)) {
         let fmt = template;
@@ -104,8 +123,6 @@ class SubmoduleBuilder {
       throw err;
     }
   };
-
-  #updateAndAddToFiles = async () => {};
 }
 
 export default SubmoduleBuilder;

@@ -2,7 +2,8 @@
 
 import sleep from './utils/sleep.js';
 import { createSpinner } from 'nanospinner';
-import Prompter from './core/Prompt.js';
+import Prompter from './core/Prompter.js';
+import Tech from './enums/tech.enum.js';
 
 /**
  *
@@ -16,7 +17,21 @@ const main = async () => {
   spinner.stop();
   try {
     const answers = await Prompter.prompt();
-    spinner.success({ text: 'Done!' });
+    if (answers.framework !== Tech.VANILLA) {
+      const techAnswers = await Prompter.withTechnologyChoicePrompt();
+      answers.dependenciesInstallation = techAnswers.dependenciesInstallation;
+    }
+    console.log(answers);
+
+    if (answers.dependenciesInstallation) {
+      spinner.start({ text: 'Installing dependencies...' });
+      await sleep(1000);
+      spinner.success({ text: 'Dependencies installed!' });
+    }
+
+    spinner.start({ text: 'Creating submodule...' });
+    await sleep(1000);
+    spinner.success({ text: 'Submodule created!' });
   } catch (err) {
     spinner.error({ text: err.message });
   }

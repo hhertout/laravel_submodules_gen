@@ -13,15 +13,14 @@ import Guard from './utils/Guard.js';
  * @returns {Promise<void>}
  */
 const main = async () => {
-  if (Guard.techIsEmpty() && Guard.destinationPathIsEmpty()) {
+  const spinner = createSpinner('Starting...').start();
+  if (!Guard.techIsEmpty() && !Guard.destinationPathIsEmpty()) {
     throw new Error(
       'Tech object or destination path object is empty, cannot proceed'
     );
   }
-
-  const spinner = createSpinner('Starting...').start();
   await sleep(1000);
-  spinner.stop();
+  spinner.success({ text: 'Started!' });
   try {
     const answers = await Prompter.prompt();
     if (answers.framework !== Tech.VANILLA) {
@@ -46,7 +45,7 @@ const main = async () => {
 
     spinner.start({ text: 'Creating submodule...' });
     await sleep(1000);
-    spinner.success({ text: 'Submodule created!' });
+    spinner.success({ text: 'Submodule successfully created!' });
   } catch (err) {
     spinner.error({ text: err.message });
   }

@@ -1,5 +1,5 @@
 import { dirname, resolve } from 'path';
-import DESTINATION_PATH from '../enums/destinationPath.enum.js';
+import DESTINATION_PATH from '../config/destinationPath.js';
 import fs from 'fs/promises';
 import Formatter from '../utils/Formatter.js';
 import * as templates from '../../src/generated/generated.js';

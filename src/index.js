@@ -3,7 +3,7 @@
 import sleep from './utils/sleep.js';
 import { createSpinner } from 'nanospinner';
 import Prompter from './core/Prompter.js';
-import Tech from './enums/tech.enum.js';
+import Tech from './config/tech.js';
 import Guard from './utils/Guard.js';
 
 /**
@@ -13,6 +13,12 @@ import Guard from './utils/Guard.js';
  * @returns {Promise<void>}
  */
 const main = async () => {
+  if (Guard.techIsEmpty() && Guard.destinationPathIsEmpty()) {
+    throw new Error(
+      'Tech object or destination path object is empty, cannot proceed'
+    );
+  }
+
   const spinner = createSpinner('Starting...').start();
   await sleep(1000);
   spinner.stop();

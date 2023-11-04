@@ -1,5 +1,5 @@
 import inquirer from 'inquirer';
-import Tech from '../enums/tech.enum.js';
+import Tech from '../config/tech.js';
 
 /**
  *  @class Prompter

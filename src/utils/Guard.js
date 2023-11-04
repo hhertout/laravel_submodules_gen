@@ -1,3 +1,5 @@
+import Tech from '../config/tech.js';
+
 /**
  * @class Guard
  *
@@ -24,6 +26,13 @@ class Guard {
     }
 
     return true;
+  };
+
+  static techIsEmpty = () => {
+    return Object.keys(Tech).length > 0;
+  };
+  static destinationPathIsEmpty = () => {
+    return Object.keys(Tech).length > 0;
   };
 }
 

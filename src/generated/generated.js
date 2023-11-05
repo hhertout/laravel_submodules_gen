@@ -1,3 +1,8 @@
 export const react_app_jsx = "import%20React%20from%20'react'%3B%0A%0Aconst%20%7B%7BsubModuleName%7D%7D%20%3D%20()%20%3D%3E%20%7B%0A%20%20return%20(%0A%20%20%20%20%3Cdiv%3E%0A%20%20%20%20%20%20%0A%20%20%20%20%3C%2Fdiv%3E%0A%20%20)%3B%0A%7D%3B%0A%0Aexport%20default%20%7B%7BsubModuleName%7D%7D%3B";
 export const react_app_module_js = "import%20React%20from%20%22react%22%3B%0Aimport%20ReactDOM%20from%20%22react-dom%2Fclient%22%3B%0Aimport%20App%20from%20%22.%2Fapp.jsx.template%22%3B%0A%0Aconst%20root%20%3D%20ReactDOM.createRoot(document.getElementById(%22root%22))%3B%0A%0Aroot.render(%3CApp%20%2F%3E)";
+export const solid_app_jsx =
+  'import%20%7B%20createSignal%20%7D%20from%20%22solid-js%22%3B%0A%0Afunction%20App()%20%7B%0A%20%20%20%20const%20%5Bcount%2C%20setCount%5D%20%3D%20createSignal(0)%3B%0A%20%20%20%20return%20(%0A%20%20%20%20%20%20%20%20%3C%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Ch2%3ECount%3A%20%7Bcount()%7D%3C%2Fh2%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cbutton%20onClick%3D%7B()%20%3D%3E%20setCount(c%20%3D%3E%20c%20%2B%201)%7D%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20Clique%20!%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fbutton%3E%0A%20%20%20%20%20%20%20%20%3C%2F%3E%0A%20%20%20%20)%3B%0A%7D%0A%0Aexport%20default%20App%3B%0A';
+export const solid_index_js =
+  'import%20%7Brender%7D%20from%20%22solid-js%2Fweb%22%3B%0Aimport%20App%20from%20%22.%2Fapp%22%3B%0A%0Aconst%20Root%20%3D%20()%20%3D%3E%20%7B%0A%20%20%20%20return%20(%0A%20%20%20%20%20%20%20%20%3CApp%2F%3E%0A%20%20%20%20)%3B%0A%7D%3B%0A%0Arender(Root%2C%20document.getElementById(%22app%22))%3B';
+export const solid_view_blade_php = '%3Cdiv%20id%3D%22app%22%3E%3C%2Fdiv%3E';
 export const vanilla_app_module_js = "const%20foo%20%3D%20%22bar%22%3B";

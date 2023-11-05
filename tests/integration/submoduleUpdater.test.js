@@ -85,7 +85,36 @@ describe('submoduleUpdater tests', () => {
           '{{subModuleName_capitalized}}',
           Formatter.getCapitalize(subModuleName)
         );
-      expect(result).toBe(files.baseContent + '\n' + expected);
+      if (files.traverse) {
+        const expectedTraverse = submoduleUpdater._traverseContent(
+          files.baseContent,
+          expected,
+          files.traverse
+        );
+        expect(result).toBe(expectedTraverse);
+      } else {
+        expect(result).toBe(files.baseContent + '\n' + expected);
+      }
     }
+  });
+  test('traverse function test ok', async () => {
+    const subModuleName = 'testModule';
+    const submoduleUpdater = new SubmoduleUpdater(
+      subModuleName,
+      EDIT_CONFIG_TEST
+    );
+    const base =
+      "<?php\nRoute::prefix('admin')->group(function () {Route::get('/users', function () {\n});\n});";
+    const expected =
+      "<?php\nRoute::prefix('admin')->group(function () {Route::get('/users', function () {\nRoute::get('/test', 'TestController@index');\n});\n});";
+    const res = submoduleUpdater._traverseContent(
+      base,
+      "Route::get('/test', 'TestController@index');\n",
+      {
+        key: '}',
+        count: 2,
+      }
+    );
+    expect(res).toBe(expected);
   });
 });

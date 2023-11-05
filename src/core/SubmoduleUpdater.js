@@ -10,7 +10,7 @@ import Formatter from '../utils/Formatter.js';
 class SubmoduleUpdater {
   /** @type {string} */
   #subModuleName;
-  /** @type {Array<{filepath: string, content: string}> | null} */
+  /** @type {Array<{filepath: string, content: string, traverse: {key: string, count: number}}>} */
   #filesToUpdate;
 
   constructor(submoduleName, filesToUpdate) {
@@ -31,19 +31,36 @@ class SubmoduleUpdater {
         const fileContent = await this._readFileToUpdate(
           this.#filesToUpdate[i].filepath
         );
-        const newContent = this._getContentToAdd(
-          this.#filesToUpdate[i].content,
-          fileContent
-        );
-        const newContentWithVariables = this._replaceVariables(
-          newContent,
-          this.#subModuleName
-        );
-        await fs.writeFile(
-          this.#filesToUpdate[i].filepath,
-          newContentWithVariables,
-          'utf8'
-        );
+        if (this.#filesToUpdate[i].traverse) {
+          const contentWithVariable = this._replaceVariables(
+            this.#filesToUpdate[i].content,
+            this.#subModuleName
+          );
+          const newContent = this._traverseContent(
+            fileContent,
+            contentWithVariable,
+            this.#filesToUpdate[i].traverse
+          );
+          await fs.writeFile(
+            this.#filesToUpdate[i].filepath,
+            newContent,
+            'utf8'
+          );
+        } else {
+          const newContent = this._getContentToAdd(
+            this.#filesToUpdate[i].content,
+            fileContent
+          );
+          const newContentWithVariables = this._replaceVariables(
+            newContent,
+            this.#subModuleName
+          );
+          await fs.writeFile(
+            this.#filesToUpdate[i].filepath,
+            newContentWithVariables,
+            'utf8'
+          );
+        }
       }
     } catch (err) {
       throw err;
@@ -86,6 +103,21 @@ class SubmoduleUpdater {
    */
   _getContentToAdd = (stringToAdd, fileContent) => {
     return fileContent + '\n' + stringToAdd;
+  };
+
+  /**
+   * @method _traverseContent
+   * @description This method is responsible for traversing the content of the file and adding a string to the file content at the targeted position
+   * @param {string} content
+   * @param {string} contentToAdd
+   * @param {{key:string, count: number}} traverseConfig
+   * @returns {string} content
+   */
+  _traverseContent = (content, contentToAdd, traverseConfig) => {
+    let splitContent = content.split(traverseConfig.key);
+    const targetedIndex = splitContent.length - 1 - traverseConfig.count;
+    splitContent[targetedIndex] = splitContent[targetedIndex] + contentToAdd;
+    return splitContent.join(traverseConfig.key);
   };
 }
 

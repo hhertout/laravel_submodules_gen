@@ -1,5 +1,5 @@
 import inquirer from 'inquirer';
-import Tech from '../config/tech.js';
+import TechnologiesConfig from '../config/technologies.config.js';
 
 /**
  *  @class Prompter
@@ -32,14 +32,14 @@ class Prompter {
         type: 'list',
         name: 'framework',
         message: 'What technology do you want to use? (default: Vanilla JS)',
-        default: Tech.VANILLA,
+        default: TechnologiesConfig.VANILLA,
         validate(input, _answers) {
           if (input.length === 0) {
             return 'Technology is required';
           }
           return true;
         },
-        choices: Object.values(Tech),
+        choices: Object.values(TechnologiesConfig),
       },
     ]);
   };

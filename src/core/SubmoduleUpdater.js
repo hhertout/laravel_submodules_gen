@@ -1,4 +1,4 @@
-import FILES_TO_UPDATE_LIST from '../config/filesToUpdate.js';
+import FILES_TO_UPDATE_LIST from '../config/filesToUpdate.config.js';
 import fs from 'fs/promises';
 import Formatter from '../utils/Formatter.js';
 

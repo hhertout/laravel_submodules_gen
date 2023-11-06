@@ -3,8 +3,9 @@
 import sleep from './utils/sleep.js';
 import { createSpinner } from 'nanospinner';
 import Prompter from './core/Prompter.js';
-import Tech from './config/tech.js';
+import TechnologiesConfig from './config/technologies.config.js';
 import Guard from './utils/Guard.js';
+import SubmoduleInstaller from './core/SubmoduleInstaller.js';
 
 /**
  *
@@ -23,13 +24,11 @@ const main = async () => {
   spinner.success({ text: 'Started!' });
   try {
     const answers = await Prompter.prompt();
-    if (answers.framework !== Tech.VANILLA) {
+    if (answers.framework !== TechnologiesConfig.VANILLA) {
       const techAnswers = await Prompter.withTechnologyChoicePrompt();
       answers.dependenciesInstallation = techAnswers.dependenciesInstallation;
     }
-    console.log(answers);
-    const err = Guard.checkAnswers(answers);
-    if (err) {
+    if (!Guard.checkAnswers(answers)) {
       spinner.stop();
       spinner.error({ text: 'Submodule not installed!' });
       spinner.error({
@@ -37,15 +36,21 @@ const main = async () => {
       });
       return;
     }
-    if (answers.dependenciesInstallation) {
-      spinner.start({ text: 'Installing dependencies...' });
-      await sleep(1000);
-      spinner.success({ text: 'Dependencies installed!' });
-    }
-
     spinner.start({ text: 'Creating submodule...' });
     await sleep(1000);
     spinner.success({ text: 'Submodule successfully created!' });
+
+    if (answers.dependenciesInstallation) {
+      spinner.start({ text: 'Installing dependencies...' });
+      await sleep(1000);
+      const installer = new SubmoduleInstaller(answers.framework);
+      try {
+        installer.install();
+      } catch (err) {
+        spinner.error({ text: 'Failed to install dependency' + err.message });
+      }
+      spinner.success({ text: 'Dependencies installed!' });
+    }
   } catch (err) {
     spinner.error({ text: err.message });
   }

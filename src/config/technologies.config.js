@@ -4,12 +4,12 @@
  * Object listing technologies
  * @type {{VANILLA: string, REACT: string, SOLID: string}}
  */
-const Tech = {
+const TECHNOLOGIES = {
   VANILLA: 'Vanilla',
   REACT: 'React',
   SOLID: 'Solid',
 };
 
-Object.freeze(Tech);
+Object.freeze(TECHNOLOGIES);
 
-export default Tech;
+export default TECHNOLOGIES;

@@ -1,4 +1,4 @@
-import Tech from '../config/tech.js';
+import TechnologiesConfig from '../config/technologies.config.js';
 
 /**
  * @class Guard
@@ -21,18 +21,20 @@ class Guard {
     if (!answers.submoduleName) {
       return false;
     }
-    if (answers.framework !== 'vanilla' && !answers.dependenciesInstallation) {
+    if (
+      answers.framework !== TechnologiesConfig.VANILLA &&
+      !answers.dependenciesInstallation
+    ) {
       return false;
     }
-
     return true;
   };
 
   static techIsEmpty = () => {
-    return Object.keys(Tech).length > 0;
+    return Object.keys(TechnologiesConfig).length > 0;
   };
   static destinationPathIsEmpty = () => {
-    return Object.keys(Tech).length > 0;
+    return Object.keys(TechnologiesConfig).length > 0;
   };
 }
 

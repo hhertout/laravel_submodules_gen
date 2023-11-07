@@ -21,6 +21,7 @@ specific requirements and ensure seamless integration into your software develop
 # Installation
 
 ### Globally
+
 ```bash
 npm install -g github:hhertout/laravel_submodules_gen
 ```
@@ -57,11 +58,13 @@ npm install
 ### Templates
 
 #### Create your templates
-Create your templates in ```src/templates``` folder. You can find folder relative to the technology you want to use.
 
-You must add ```.template``` extension to your template file to add them to the generation process.
+Create your templates in `src/templates` folder. You can find folder relative to the technology you want to use.
+
+You must add `.template` extension to your template file to add them to the generation process.
 
 #### Variables
+
 You can use these variables in your templates:
 
 ```
@@ -73,24 +76,29 @@ You can use these variables in your templates:
 ```
 
 ### Generating templates
-To generate templates: 
+
+To generate templates:
+
 ```bash
 npm run generate
-``` 
-will generate all the referred in ```src/templates``` templates in ```generated.js``` file.
+```
+
+will generate all the referred in `src/templates` templates in `generated.js` file.
 
 ### Refer the template to the dest path
 
-Then, you must add the generated template to the ```destinationPath.js``` file.
+Then, you must add the generated template to the `destinationPath.js` file.
 
-Caution ! 
-- The key must be the same as the template name. Replace the ```.``` by ```_``` (as well for the extension).
-  Example : ``app.module.js`` become ```app_module_js```
+Caution !
+
+- The key must be the same as the template name. Replace the `.` by `_` (as well for the extension).
+  Example : `app.module.js` become `app_module_js`
 - The value is the destination path where the template must be in your application.
+- Your `ìndex.js` file will be generated to `<module_name>.module.js`
 
 ### Editing files with the new submodule
 
-In case you need to update some file, for example the ```route.php``` file. You can configure it with the tool.
+In case you need to update some file, for example the `route.php` file. You can configure it with the tool.
 
 To complete...Coming soon...
 

@@ -1,6 +1,7 @@
 import SubmoduleBuilder from '../../src/core/SubmoduleBuilder.js';
 import DESTINATION_PATH_TEST from '../data/destinationPath.js';
 import { readdir } from 'fs/promises';
+import TECHNOLOGIES from '../../src/config/technologies.config.js';
 
 describe('SubModuleBuilder integration tests', () => {
   test('SubModuleBuilder is alive', () => {
@@ -16,8 +17,17 @@ describe('SubModuleBuilder integration tests', () => {
 
     for (const [key, value] of Object.entries(DESTINATION_PATH_TEST)) {
       const dirs = await readdir(value);
-      const expectedFile = key.replaceAll('_', '.');
-      expect(dirs).toContain(expectedFile);
+      let expectedFile = key.replaceAll('_', '.');
+      Object.values(TECHNOLOGIES).forEach((technology) => {
+        const pattern = new RegExp(`${technology.toLowerCase()}.`, 'gi');
+        expectedFile = expectedFile.replaceAll(pattern, '');
+      });
+      if (!expectedFile.includes('index')) {
+        expect(dirs).toContain(expectedFile.toLowerCase());
+      } else {
+        const name = subModuleName.split(/module/i).join('');
+        expect(dirs).toContain(`${name.toLowerCase()}.module.js`);
+      }
     }
   });
 });
@@ -36,8 +46,17 @@ describe('Submodule builder with different submodule name', () => {
 
     for (const [key, value] of Object.entries(DESTINATION_PATH_TEST)) {
       const dirs = await readdir(value);
-      const expectedFile = key.replaceAll('_', '.');
-      expect(dirs).toContain(expectedFile);
+      let expectedFile = key.replaceAll('_', '.');
+      Object.values(TECHNOLOGIES).forEach((technology) => {
+        const pattern = new RegExp(`${technology.toLowerCase()}.`, 'gi');
+        expectedFile = expectedFile.replaceAll(pattern, '');
+      });
+      if (!expectedFile.includes('index')) {
+        expect(dirs).toContain(expectedFile.toLowerCase());
+      } else {
+        const name = subModuleName.split(/module/i).join('');
+        expect(dirs).toContain(`${name}.module.js`);
+      }
     }
   });
   test('test with different submodule name', async () => {
@@ -50,8 +69,17 @@ describe('Submodule builder with different submodule name', () => {
 
     for (const [key, value] of Object.entries(DESTINATION_PATH_TEST)) {
       const dirs = await readdir(value);
-      const expectedFile = key.replaceAll('_', '.');
-      expect(dirs).toContain(expectedFile);
+      let expectedFile = key.replaceAll('_', '.');
+      Object.values(TECHNOLOGIES).forEach((technology) => {
+        const pattern = new RegExp(`${technology.toLowerCase()}.`, 'gi');
+        expectedFile = expectedFile.replaceAll(pattern, '');
+      });
+      if (!expectedFile.includes('index')) {
+        expect(dirs).toContain(expectedFile.toLowerCase());
+      } else {
+        const name = subModuleName.split(/module/i).join('');
+        expect(dirs).toContain(`${name}.module.js`);
+      }
     }
   });
 });

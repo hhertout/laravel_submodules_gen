@@ -3,6 +3,7 @@ import DESTINATION_PATH from '../config/destinationPath.config.js';
 import fs from 'fs/promises';
 import Formatter from '../utils/Formatter.js';
 import * as templates from '../../src/generated/generated.js';
+import TECHNOLOGIES from '../config/technologies.config.js';
 
 /**
  * @class SubmoduleBuilder
@@ -72,10 +73,18 @@ class SubmoduleBuilder {
     try {
       for (const [key, template] of Object.entries(this.#formattedTemplates)) {
         if (!this.#destinationPathRepository[key]) continue;
-        const fileName = key.replaceAll('_', '.');
+        let fileName = key.replaceAll('_', '.');
+        if (fileName.includes('index') && fileName.includes('.js')) {
+          const name = this.#subModuleName.split(/module/i).join('');
+          fileName = fileName.replaceAll('index', `${name}.module`);
+        }
+        Object.values(TECHNOLOGIES).forEach((technology) => {
+          const pattern = new RegExp(`${technology}.`, 'gi');
+          fileName = fileName.replaceAll(pattern, '');
+        });
         const destPath = resolve(
           this.#destinationPathRepository[key],
-          fileName
+          fileName.toLowerCase()
         );
         await fs.mkdir(dirname(destPath), { recursive: true });
         await fs.writeFile(destPath, decodeURIComponent(template), 'utf-8');

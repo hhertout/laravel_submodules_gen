@@ -17,7 +17,7 @@ class Prompter {
       {
         type: 'input',
         name: 'submoduleName',
-        message: "What's the name of your submodule? (in camelCase)",
+        message: "What's the name of your submodule? (PascalCase)",
         validate(input, _answers) {
           if (input.length === 0) {
             return 'Submodule name is required';

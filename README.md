@@ -8,6 +8,7 @@
     <a href="https://github.com/hhertout/rac_tool/actions">
       <img alt="Tests Passing" src="https://github.com/hhertout/laravel_submodules_gen/actions/workflows/tests.yml/badge.svg" />
     </a>
+<a href='https://coveralls.io/github/hhertout/laravel_submodules_gen'><img src='https://coveralls.io/repos/github/hhertout/laravel_submodules_gen/badge.svg' alt='Coverage Status' /></a>
 </p>
 
 # Presentation

@@ -5,10 +5,10 @@ name: 🐋 Tests - Node.js
 
 on:
   pull_request:
-    branches: [ "main", "dev" ]
+    branches: ['main', 'dev']
 
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -23,3 +23,7 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
       - run: npm ci
       - run: npm run test
+      - name: make test-coverage
+        run: npm run coverage
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2

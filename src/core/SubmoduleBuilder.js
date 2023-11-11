@@ -3,6 +3,7 @@ import DESTINATION_PATH from '../config/destinationPath.config.js';
 import fs from 'fs/promises';
 import Formatter from '../utils/Formatter.js';
 import * as templates from '../../src/generated/generated.js';
+import TECHNOLOGIES from '../config/technologies.config.js';
 
 /**
  * @class SubmoduleBuilder
@@ -12,16 +13,16 @@ import * as templates from '../../src/generated/generated.js';
 class SubmoduleBuilder {
   /** @type {string} */
   #subModuleName;
-  /** @type {{[key: string]: string}} */
+  /** @type {Record<string, string>} */
   #destinationPathRepository;
-  /** @type {{[key: string]: string} | null} */
+  /** @type {Record<string, string> | null} */
   #formattedTemplates;
 
   /**
    *
    * @constructor
    * @param {string} subModuleName
-   * @param {{[key: string]: string}} destinationPathRepository
+   * @param {Record<string, string>} destinationPathRepository
    */
   constructor(subModuleName, destinationPathRepository = DESTINATION_PATH) {
     this.#subModuleName = subModuleName;
@@ -34,7 +35,7 @@ class SubmoduleBuilder {
    * Caution - Object values are readonly !
    * @method getTemplates
    * @description Return all the templates from generated.js as module object
-   * @returns {{[variable: string]: string}}
+   * @returns {Partial<Record<string, string>>}
    */
   getTemplates$ = () => {
     return templates;
@@ -52,11 +53,12 @@ class SubmoduleBuilder {
       await this.#replaceTemplateVariables();
       await this.#writeSubmoduleFiles();
     } catch (err) {
-      throw new Error(`Error while running the app: ${err.message}`);
+      throw new Error(`Error during the build process: ${err.message}`);
     }
   };
 
   /**
+   * @private
    * @method #writeSubmoduleFiles
    * @description Write the submodule files to the destination path
    * @returns {Promise<void>}
@@ -72,17 +74,66 @@ class SubmoduleBuilder {
     try {
       for (const [key, template] of Object.entries(this.#formattedTemplates)) {
         if (!this.#destinationPathRepository[key]) continue;
-        const fileName = key.replaceAll('_', '.');
-        const destPath = resolve(
+        let fileName = key.replaceAll('_', '.');
+        Object.values(TECHNOLOGIES).forEach((technology) => {
+          const pattern = new RegExp(`${technology}.`, 'gi');
+          fileName = fileName.replaceAll(pattern, '');
+        });
+        const destinationFileName = this.#relevantFileProcess(fileName);
+        const destinationPath = resolve(
           this.#destinationPathRepository[key],
-          fileName
+          destinationFileName
         );
-        await fs.mkdir(dirname(destPath), { recursive: true });
-        await fs.writeFile(destPath, decodeURIComponent(template), 'utf-8');
+        await fs.mkdir(dirname(destinationPath), { recursive: true });
+        await fs.writeFile(
+          destinationPath,
+          decodeURIComponent(template),
+          'utf-8'
+        );
       }
     } catch (err) {
       throw err;
     }
+  };
+
+  /**
+   * @private
+   * @method #specificFileNameCase
+   * @description Found exceptions for specific file names
+   * @param fileName
+   * @returns {string}
+   */
+  #relevantFileProcess = (fileName) => {
+    if (fileName.includes('index') && fileName.includes('.js')) {
+      fileName = this._buildIndexFilename(fileName);
+    }
+    if (fileName.includes('controller') && fileName.includes('.php')) {
+      fileName = this._buildControllerFilename(fileName);
+    }
+    return fileName;
+  };
+
+  /**
+   * @method #buildIndex
+   * @description Build the index file - replace the index with the submodule name
+   * @param fileName
+   * @returns {string}
+   */
+  _buildIndexFilename = (fileName) => {
+    const name = this.#subModuleName.split(/module/i).join('');
+    return fileName.replaceAll('index', `${name.toLowerCase()}.module`);
+  };
+
+  /**
+   * @method #buildController
+   * @description Build the controller file - replace the controller with the submodule name
+   * @param fileName
+   * @returns {string}
+   */
+  _buildControllerFilename = (fileName) => {
+    const name = this.#subModuleName.split(/module/i).join('');
+    const controllerName = name.charAt(0).toUpperCase() + name.slice(1);
+    return fileName.replaceAll('controller', `${controllerName}Controller`);
   };
 
   /**

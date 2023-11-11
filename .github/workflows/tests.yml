@@ -6,6 +6,8 @@ name: 🐋 Tests - Node.js
 on:
   pull_request:
     branches: ['main', 'dev']
+  push:
+    branches: ['main']
 
 jobs:
   tests:

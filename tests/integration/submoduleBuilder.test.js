@@ -3,83 +3,60 @@ import DESTINATION_PATH_TEST from '../data/destinationPath.js';
 import { readdir } from 'fs/promises';
 import TECHNOLOGIES from '../../src/config/technologies.config.js';
 
+const dist_path = 'tests/integration/dist';
 describe('SubModuleBuilder integration tests', () => {
   test('SubModuleBuilder is alive', () => {
     expect(SubmoduleBuilder).toBeTruthy();
   });
-  test('SubModuleBuilder is open', async () => {
+  test('SubModuleBuilder work', async () => {
     let subModuleName = 'TestModule';
     const subModuleBuilder = new SubmoduleBuilder(
       subModuleName,
       DESTINATION_PATH_TEST
     );
     await subModuleBuilder.run();
-
-    for (const [key, value] of Object.entries(DESTINATION_PATH_TEST)) {
-      const dirs = await readdir(value);
-      let expectedFile = key.replaceAll('_', '.');
-      Object.values(TECHNOLOGIES).forEach((technology) => {
-        const pattern = new RegExp(`${technology.toLowerCase()}.`, 'gi');
-        expectedFile = expectedFile.replaceAll(pattern, '');
-      });
-      if (!expectedFile.includes('index')) {
-        expect(dirs).toContain(expectedFile.toLowerCase());
-      } else {
-        const name = subModuleName.split(/module/i).join('');
-        expect(dirs).toContain(`${name.toLowerCase()}.module.js`);
+    const dirs = await readdir(dist_path);
+    for (const destPath in DESTINATION_PATH_TEST) {
+      let expected = destPath.replaceAll('_', '.');
+      if (!expected.includes('controller') && !expected.includes('index')) {
+        Object.values(TECHNOLOGIES).forEach((technology) => {
+          const pattern = new RegExp(`${technology}.`, 'gi');
+          expected = expected.replaceAll(pattern, '');
+        });
+        expect(dirs).toContain(expected);
       }
     }
   });
 });
 
+/**
+ *
+ * Tests for relevant submodule name
+ *
+ */
 describe('Submodule builder with different submodule name', () => {
   /**
    * Test with different submodule name
    */
-  test('test with different submodule name', async () => {
-    const subModuleName = 'testModule';
-    const subModuleBuilder = new SubmoduleBuilder(
-      subModuleName,
-      DESTINATION_PATH_TEST
-    );
+  const subModuleName = 'testModule';
+  const subModuleBuilder = new SubmoduleBuilder(
+    subModuleName,
+    DESTINATION_PATH_TEST
+  );
+  const name = subModuleName.split(/module/i).join('');
+  test('test with different submodule name => index.js', async () => {
     await subModuleBuilder.run();
-
-    for (const [key, value] of Object.entries(DESTINATION_PATH_TEST)) {
-      const dirs = await readdir(value);
-      let expectedFile = key.replaceAll('_', '.');
-      Object.values(TECHNOLOGIES).forEach((technology) => {
-        const pattern = new RegExp(`${technology.toLowerCase()}.`, 'gi');
-        expectedFile = expectedFile.replaceAll(pattern, '');
-      });
-      if (!expectedFile.includes('index')) {
-        expect(dirs).toContain(expectedFile.toLowerCase());
-      } else {
-        const name = subModuleName.split(/module/i).join('');
-        expect(dirs).toContain(`${name}.module.js`);
-      }
-    }
+    const moduleFileName = name.toLowerCase();
+    const expectedFile = `${moduleFileName}.module.js`;
+    const dirs = await readdir(dist_path);
+    expect(dirs).toContain(expectedFile);
   });
-  test('test with different submodule name', async () => {
-    const subModuleName = 'testmodule';
-    const subModuleBuilder = new SubmoduleBuilder(
-      subModuleName,
-      DESTINATION_PATH_TEST
-    );
+  test('test with different submodule name => controller php', async () => {
     await subModuleBuilder.run();
+    const controllerFileName = name.charAt(0).toUpperCase() + name.slice(1);
+    const expectedFile = `${controllerFileName}Controller.php`;
+    const dirs = await readdir(dist_path);
 
-    for (const [key, value] of Object.entries(DESTINATION_PATH_TEST)) {
-      const dirs = await readdir(value);
-      let expectedFile = key.replaceAll('_', '.');
-      Object.values(TECHNOLOGIES).forEach((technology) => {
-        const pattern = new RegExp(`${technology.toLowerCase()}.`, 'gi');
-        expectedFile = expectedFile.replaceAll(pattern, '');
-      });
-      if (!expectedFile.includes('index')) {
-        expect(dirs).toContain(expectedFile.toLowerCase());
-      } else {
-        const name = subModuleName.split(/module/i).join('');
-        expect(dirs).toContain(`${name}.module.js`);
-      }
-    }
+    expect(dirs).toContain(expectedFile);
   });
 });

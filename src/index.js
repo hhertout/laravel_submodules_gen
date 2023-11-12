@@ -6,6 +6,8 @@ import Prompter from './core/Prompter.js';
 import TechnologiesConfig from './config/technologies.config.js';
 import Guard from './utils/Guard.js';
 import SubmoduleInstaller from './core/SubmoduleInstaller.js';
+import SubmoduleBuilder from './core/SubmoduleBuilder.js';
+import SubmoduleUpdater from './core/SubmoduleUpdater.js';
 
 /**
  *
@@ -37,9 +39,17 @@ const main = async () => {
       return;
     }
     spinner.start({ text: 'Creating submodule...' });
-    await sleep(1000);
-    spinner.success({ text: 'Submodule successfully created!' });
-
+    try {
+      await new SubmoduleBuilder(
+        answers.submoduleName,
+        answers.framework
+      ).run();
+      await new SubmoduleUpdater(answers.submoduleName).run();
+      spinner.success({ text: 'Submodule successfully created!' });
+    } catch (err) {
+      spinner.error({ text: 'Failed to create submodule : ' + err.message });
+      return;
+    }
     if (answers.dependenciesInstallation) {
       spinner.start({ text: 'Installing dependencies...' });
       await sleep(1000);
@@ -47,7 +57,10 @@ const main = async () => {
       try {
         installer.install();
       } catch (err) {
-        spinner.error({ text: 'Failed to install$ dependency' + err.message });
+        spinner.error({
+          text: 'Failed to install dependency : ' + err.message,
+        });
+        return;
       }
       spinner.success({ text: 'Dependencies installed!' });
     }

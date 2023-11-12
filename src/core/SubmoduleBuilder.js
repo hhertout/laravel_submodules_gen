@@ -13,6 +13,8 @@ import TECHNOLOGIES from '../config/technologies.config.js';
 class SubmoduleBuilder {
   /** @type {string} */
   #subModuleName;
+  /** @type {string} */
+  #technologyChoice;
   /** @type {Record<string, string>} */
   #destinationPathRepository;
   /** @type {Record<string, string> | null} */
@@ -22,10 +24,16 @@ class SubmoduleBuilder {
    *
    * @constructor
    * @param {string} subModuleName
+   * @param {string} technologyChoice
    * @param {Record<string, string>} destinationPathRepository
    */
-  constructor(subModuleName, destinationPathRepository = DESTINATION_PATH) {
+  constructor(
+    subModuleName,
+    technologyChoice,
+    destinationPathRepository = DESTINATION_PATH
+  ) {
     this.#subModuleName = subModuleName;
+    this.#technologyChoice = technologyChoice;
     this.#destinationPathRepository = destinationPathRepository;
     this.#formattedTemplates = null;
   }
@@ -73,7 +81,11 @@ class SubmoduleBuilder {
     }
     try {
       for (const [key, template] of Object.entries(this.#formattedTemplates)) {
-        if (!this.#destinationPathRepository[key]) continue;
+        if (!this.#destinationPathRepository[key]) {
+          console.warn(`Destination path not found for ${key}`);
+          continue;
+        }
+        if (!this._isChosenTechnology(key)) continue;
         let fileName = key.replaceAll('_', '.');
         Object.values(TECHNOLOGIES).forEach((technology) => {
           const pattern = new RegExp(`${technology}.`, 'gi');
@@ -154,6 +166,17 @@ class SubmoduleBuilder {
     const name = this.#subModuleName.split(/module/i).join('');
     const viewName = name.toLowerCase();
     return fileName.replaceAll('view', `${viewName}`);
+  };
+
+  /**
+   * @method _isChosenTechnology
+   * @param {string} technology
+   * @returns {boolean}
+   */
+  _isChosenTechnology = (technology) => {
+    return technology
+      .toLowerCase()
+      .includes(this.#technologyChoice.toLowerCase());
   };
 
   /**

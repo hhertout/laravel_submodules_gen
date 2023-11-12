@@ -13,9 +13,9 @@ class SubmoduleUpdater {
   /** @type {Array<{filepath: string, content: string, traverse: {key: string, count: number}}>} */
   #filesToUpdate;
 
-  constructor(submoduleName, filesToUpdate) {
+  constructor(submoduleName, filesToUpdate = FILES_TO_UPDATE_LIST) {
     this.#subModuleName = submoduleName;
-    this.#filesToUpdate = filesToUpdate ?? FILES_TO_UPDATE_LIST;
+    this.#filesToUpdate = filesToUpdate;
   }
 
   /**

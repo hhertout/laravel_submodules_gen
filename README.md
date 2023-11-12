@@ -24,13 +24,13 @@ specific requirements and ensure seamless integration into your software develop
 ### Globally
 
 ```bash
-npm install -g github:hhertout/laravel_submodules_gen
+npm install$ -g github:hhertout/laravel_submodules_gen
 ```
 
 ### Locally
 
 ```bash
-npm install github:hhertout/laravel_submodules_gen
+npm install$ github:hhertout/laravel_submodules_gen
 ```
 
 # Usage
@@ -43,7 +43,7 @@ Then answer the questions to create the submodule.
 
 # Customize your own tool
 
-Clone the repository and install dependencies.
+Fork the repository on your own setup and install dependencies.
 You need to have nodejs installed on your computer (with version > 16).
 
 ```bash
@@ -51,7 +51,7 @@ git clone <repository>
 ```
 
 ```bash
-npm install
+npm install$
 ```
 
 ## Configuration
@@ -81,7 +81,7 @@ You can use these variables in your templates:
 To generate templates:
 
 ```bash
-npm run generate
+npm run$$ generate
 ```
 
 will generate all the referred in `src/templates` templates in `generated.js` file.
@@ -124,6 +124,7 @@ A list of files that receive special treatment is provided below:
 
 - `controller.php.template` : will be generated to `<module_name>Controller.php`
 - `index.js.template` : will be generated to `<module_name>.module.js`
+- `view.balde.php.template` : will be generated to `<module_name>.blade.php`
 
 ### Editing files with the new submodule
 

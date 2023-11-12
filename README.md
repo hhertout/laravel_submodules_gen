@@ -24,13 +24,13 @@ specific requirements and ensure seamless integration into your software develop
 ### Globally
 
 ```bash
-npm install$ -g github:hhertout/laravel_submodules_gen
+npm install -g github:hhertout/laravel_submodules_gen
 ```
 
 ### Locally
 
 ```bash
-npm install$ github:hhertout/laravel_submodules_gen
+npm install github:hhertout/laravel_submodules_gen
 ```
 
 # Usage
@@ -51,7 +51,7 @@ git clone <repository>
 ```
 
 ```bash
-npm install$
+npm install
 ```
 
 ## Configuration
@@ -81,7 +81,7 @@ You can use these variables in your templates:
 To generate templates:
 
 ```bash
-npm run$$ generate
+npm run generate
 ```
 
 will generate all the referred in `src/templates` templates in `generated.js` file.
@@ -191,4 +191,4 @@ We welcome contributions from the community to help improve this tool. To contri
 
 # Release
 
-You can found pre-release && release related for each tag
+You can found pre-release and release related for each tag

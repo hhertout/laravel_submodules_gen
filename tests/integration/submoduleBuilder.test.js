@@ -19,6 +19,7 @@ describe('SubModuleBuilder integration tests', () => {
     await subModuleBuilder.run();
     const dirs = await readdir(dist_path);
     for (const destPath in DESTINATION_PATH_TEST) {
+      if (!destPath.includes(techChoice.toLowerCase())) continue;
       let expected = destPath.replaceAll('_', '.');
       if (
         !expected.includes('controller') &&

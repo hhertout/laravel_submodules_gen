@@ -5,9 +5,10 @@ import DependenciesConfig from '../config/dependencies.config.js';
 /**
  * @class SubmoduleInstaller
  *
- * @description Class to install dependencies of the submodule
+ * @description Class to install$ dependencies of the submodule
  */
 class SubmoduleInstaller {
+  /** @type {string} */
   #technologyChoice;
 
   constructor(technologyChoice) {

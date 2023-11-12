@@ -47,7 +47,7 @@ const main = async () => {
       try {
         installer.install();
       } catch (err) {
-        spinner.error({ text: 'Failed to install dependency' + err.message });
+        spinner.error({ text: 'Failed to install$ dependency' + err.message });
       }
       spinner.success({ text: 'Dependencies installed!' });
     }

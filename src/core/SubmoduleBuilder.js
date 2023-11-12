@@ -37,20 +37,20 @@ class SubmoduleBuilder {
    * @description Return all the templates from generated.js as module object
    * @returns {Partial<Record<string, string>>}
    */
-  getTemplates$ = () => {
+  getTemplates = () => {
     return templates;
   };
 
   /**
    *
    * @method run
-   * @description run the app
+   * @description run$$ the app
    * @returns {Promise<void>}
    * @throws {Error}
    */
   run = async () => {
     try {
-      await this.#replaceTemplateVariables();
+      await this.#buildTemplateVariable();
       await this.#writeSubmoduleFiles();
     } catch (err) {
       throw new Error(`Error during the build process: ${err.message}`);
@@ -104,11 +104,19 @@ class SubmoduleBuilder {
    * @returns {string}
    */
   #relevantFileProcess = (fileName) => {
-    if (fileName.includes('index') && fileName.includes('.js')) {
-      fileName = this._buildIndexFilename(fileName);
-    }
-    if (fileName.includes('controller') && fileName.includes('.php')) {
-      fileName = this._buildControllerFilename(fileName);
+    switch (fileName) {
+      case 'index.js': {
+        fileName = this._buildIndexFilename(fileName);
+        break;
+      }
+      case 'controller.php': {
+        fileName = this._buildControllerFilename(fileName);
+        break;
+      }
+      case 'view.blade.php': {
+        fileName = this._buildViewFilename(fileName);
+        break;
+      }
     }
     return fileName;
   };
@@ -137,14 +145,26 @@ class SubmoduleBuilder {
   };
 
   /**
-   * @method #replaceTemplateVariables
+   * @method _buildViewFilename
+   * @description Build the view file - replace the view with the submodule name
+   * @param fileName
+   * @returns {string}
+   */
+  _buildViewFilename = (fileName) => {
+    const name = this.#subModuleName.split(/module/i).join('');
+    const viewName = name.toLowerCase();
+    return fileName.replaceAll('view', `${viewName}`);
+  };
+
+  /**
+   * @method #buildTemplateVariable
    * @description Replace the template variables with the submodule name
    * @returns {Promise<void>}
    * @throws {Error}
    */
-  #replaceTemplateVariables = async () => {
+  #buildTemplateVariable = async () => {
     try {
-      const templates = this.getTemplates$();
+      const templates = this.getTemplates();
       const formattedTemplates = {};
       for (let [key, template] of Object.entries(templates)) {
         let fmt = template;

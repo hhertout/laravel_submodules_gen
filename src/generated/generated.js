@@ -13,3 +13,4 @@ export const solid_view_blade_php = '%3Cdiv%20id%3D%22app%22%3E%3C%2Fdiv%3E';
 export const vanilla_app_module_js = 'const%20foo%20%3D%20%22bar%22%3B';
 export const vanilla_controller_php =
   "%3C%3Fphp%0A%0Anamespace%20App%5CHttp%5CControllers%3B%0A%0Ause%20Illuminate%5CFoundation%5CAuth%5CAccess%5CAuthorizesRequests%3B%0Ause%20Illuminate%5CFoundation%5CValidation%5CValidatesRequests%3B%0Ause%20Illuminate%5CRouting%5CController%20as%20BaseController%3B%0A%0Aclass%20%7B%7BsubModuleName_capitalized%7D%7DController%20extends%20BaseController%0A%7B%0A%20%20%20%20use%20AuthorizesRequests%2C%20ValidatesRequests%3B%0A%0A%20%20%20%20public%20function%20index()%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20return%20view('resources%2Fviews%2F%7B%7BsubModuleName_lw%7D%7D')%3B%0A%20%20%20%20%7D%0A%7D";
+export const vanilla_view_blade_php = '%3Cdiv%20id%3D%22app%22%3E%3C%2Fdiv%3E';

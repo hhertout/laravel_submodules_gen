@@ -54,7 +54,7 @@ class Prompter {
       {
         type: 'confirm',
         name: 'dependenciesInstallation',
-        message: 'Do you want to install dependencies? (default: NO)',
+        message: 'Do you want to install$ dependencies? (default: NO)',
         default: false,
       },
     ]);

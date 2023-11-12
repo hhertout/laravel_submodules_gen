@@ -18,7 +18,11 @@ describe('SubModuleBuilder integration tests', () => {
     const dirs = await readdir(dist_path);
     for (const destPath in DESTINATION_PATH_TEST) {
       let expected = destPath.replaceAll('_', '.');
-      if (!expected.includes('controller') && !expected.includes('index')) {
+      if (
+        !expected.includes('controller') &&
+        !expected.includes('index') &&
+        !expected.includes('view')
+      ) {
         Object.values(TECHNOLOGIES).forEach((technology) => {
           const pattern = new RegExp(`${technology}.`, 'gi');
           expected = expected.replaceAll(pattern, '');
@@ -35,9 +39,6 @@ describe('SubModuleBuilder integration tests', () => {
  *
  */
 describe('Submodule builder with different submodule name', () => {
-  /**
-   * Test with different submodule name
-   */
   const subModuleName = 'testModule';
   const subModuleBuilder = new SubmoduleBuilder(
     subModuleName,
@@ -55,6 +56,13 @@ describe('Submodule builder with different submodule name', () => {
     await subModuleBuilder.run();
     const controllerFileName = name.charAt(0).toUpperCase() + name.slice(1);
     const expectedFile = `${controllerFileName}Controller.php`;
+    const dirs = await readdir(dist_path);
+
+    expect(dirs).toContain(expectedFile);
+  });
+  test('test with different submodule name => view blade php', async () => {
+    await subModuleBuilder.run();
+    const expectedFile = `${name.toLowerCase()}.blade.php`;
     const dirs = await readdir(dist_path);
 
     expect(dirs).toContain(expectedFile);

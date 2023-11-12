@@ -10,13 +10,16 @@ describe('SubModuleBuilder integration tests', () => {
   });
   test('SubModuleBuilder work', async () => {
     let subModuleName = 'TestModule';
+    const techChoice = 'Vanilla';
     const subModuleBuilder = new SubmoduleBuilder(
       subModuleName,
+      techChoice,
       DESTINATION_PATH_TEST
     );
     await subModuleBuilder.run();
     const dirs = await readdir(dist_path);
     for (const destPath in DESTINATION_PATH_TEST) {
+      if (!destPath.includes(techChoice.toLowerCase())) continue;
       let expected = destPath.replaceAll('_', '.');
       if (
         !expected.includes('controller') &&
@@ -40,8 +43,10 @@ describe('SubModuleBuilder integration tests', () => {
  */
 describe('Submodule builder with different submodule name', () => {
   const subModuleName = 'testModule';
+  const techChoice = 'Vanilla';
   const subModuleBuilder = new SubmoduleBuilder(
     subModuleName,
+    techChoice,
     DESTINATION_PATH_TEST
   );
   const name = subModuleName.split(/module/i).join('');

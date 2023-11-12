@@ -70,7 +70,7 @@ describe('submoduleUpdater tests', () => {
       subModuleName.toUpperCase() + Formatter.getCamelCase(subModuleName)
     );
   });
-  test('run function test ok', async () => {
+  test('run$$ function test ok', async () => {
     const subModuleName = 'testModule';
     const submoduleUpdater = new SubmoduleUpdater(
       subModuleName,

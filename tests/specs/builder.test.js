@@ -20,4 +20,12 @@ describe('Builder class tests', () => {
     const result = submoduleBuilder._buildControllerFilename(test);
     expect(result).toEqual(expected);
   });
+
+  test('builder replace view name', () => {
+    const submoduleBuilder = new SubmoduleBuilder('testModule');
+    const test = 'view.blade.php';
+    const expected = 'test.blade.php';
+    const result = submoduleBuilder._buildViewFilename(test);
+    expect(result).toEqual(expected);
+  });
 });
